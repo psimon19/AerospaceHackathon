@@ -1,5 +1,4 @@
 import time
-import math
 import RPi.GPIO as GPIO
 
 EN = 7
@@ -17,14 +16,30 @@ GPIO.setup(MS3, GPIO.OUT)
 GPIO.setup(stp, GPIO.OUT)
 GPIO.setup(dir, GPIO.OUT)
 
-
+count = 0
 
 #Variables
-count = 0
-rpm				#Revolutions per minute
-TPI	= 16		#Threads per inch
-DISTANCE = 10	#Between hinge and drive bolt
+seconds
+SIDRATE = .0000727
+TPI = 16
+REV = 1/16 * TPI
+SPR = 3200	
 
+dThetaMu = 		#Change in theta for 1 mu step
+#ThetaR	 = 		#Change in theta for 1 revolution
+
+
+dlRod = 1/16		#Change in length of the rod
+dlRodMu = 
+lArms = 			#Length of arms
+
+#Time in seconds between 
+def sleepTime():
+	#dThetaR = math.acos((dlRod ** 2) / ((2) * (lArms ** 2)))
+	dlRodMu = (dlRod) * (1 / SPR)
+	dThetaMu = math.acos((dlRodMu ** 2) / ((2) * (lArms ** 2)))
+	seconds = dThetaMu / SIDRATE
+	return seconds
 
 def resetBEDPins():
 	GPIO.output(stp, GPIO.LOW)
@@ -39,23 +54,14 @@ def smallStepMode():
 	GPIO.output(MS1, GPIO.HIGH)
 	GPIO.output(MS2, GPIO.HIGH)
 	GPIO.output(MS3, GPIO.HIGH)
-	for i in range(0, 3200):
+	for i in range(0, 200):
 		GPIO.output(stp, GPIO.HIGH)
-		time.sleep(.01)
+		time.sleep(0.02)
 		GPIO.output(stp, GPIO.LOW)
-		time.sleep(.01)
+		time.sleep(0.02)
 
-def steps():
-
-	rpm = DISTANCE * (((2 * Math.pi) / 1436) * TPI)
-	steps = RPM / 3200
-	return steps
-
-while (True):
-	if count < 1:
-		GPIO.output(EN, GPIO.LOW)
-		smallStepMode()
-		resetBEDPins()
-		count += 1
+GPIO.output(EN, GPIO.LOW)
+smallStepMode()
+resetBEDPins()
 
 GPIO.cleanup()
