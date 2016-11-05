@@ -18,7 +18,7 @@ GPIO.setup(dir, GPIO.OUT)
 
 count = 0
 
-def smallStepMode():
+def resetBEDPins():
 	GPIO.output(stp, GPIO.LOW)
 	GPIO.output(dir, GPIO.LOW)
 	GPIO.output(MS1, GPIO.LOW)
@@ -26,22 +26,19 @@ def smallStepMode():
 	GPIO.output(MS3, GPIO.LOW)
 	GPIO.output(EN, GPIO.HIGH)
 
-def resetBEDPins():
+def smallStepMode():
 	GPIO.output(dir, GPIO.LOW)
 	GPIO.output(MS1, GPIO.HIGH)
 	GPIO.output(MS2, GPIO.HIGH)
 	GPIO.output(MS3, GPIO.HIGH)
-	for i in range(0, 3200):
+	for i in range(0, 200):
 		GPIO.output(stp, GPIO.HIGH)
-		time.sleep(.01)
+		time.sleep(0.02)
 		GPIO.output(stp, GPIO.LOW)
-		time.sleep(.01)
+		time.sleep(0.02)
 
-while (True):
-	if count < 1:
-		GPIO.output(EN, GPIO.LOW)
-		smallStepMode()
-		resetBEDPins()
-		count += 1
+GPIO.output(EN, GPIO.LOW)
+smallStepMode()
+resetBEDPins()
 
 GPIO.cleanup()
