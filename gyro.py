@@ -61,56 +61,54 @@ def calibrate():
 		yAcclCal = yAcclCal / 10
 		zAcclCal = zAcclCal / 10
 
+calibrateTrue = raw_input("Calibrated? (y): ")
+while (calibrateTrue is not "y"):
 	calibrateTrue = raw_input("Calibrated? (y): ")
-	while (calibrateTrue is not "y"):
-		calibrateTrue = raw_input("Calibrated? (y): ")
-		calibrate()
 	calibrate()
-	while (True):
+calibrate()
+while (True):
 
-			for i in range(0, 10):
+	for i in range(0, 10):
 			# MMA8452Q address, 0x1C(28)
 			# Select Control register, 0x2A(42)
 			#		0x00(00)	StandBy mode
-			bus.write_byte_data(0x1D, 0x2A, 0x00)
-
+		bus.write_byte_data(0x1D, 0x2A, 0x00)
 			# MMA8452Q address, 0x1C(28)
 			# Select Control register, 0x2A(42)
 			#		0x01(01)	Active mode
-			bus.write_byte_data(0x1D, 0x2A, 0x01)
+		bus.write_byte_data(0x1D, 0x2A, 0x01)
 
 			# MMA8452Q address, 0x1C(28)
 			# Select Configuration register, 0x0E(14)
 			#		0x00(00)	Set range to +/- 2g
-			bus.write_byte_data(0x1D, 0x0E, 0x00)
+		bus.write_byte_data(0x1D, 0x0E, 0x00)
 
-			time.sleep(0.1)
+		time.sleep(0.1)
 
 			# MMA8452Q address, 0x1C(28)
 			# Read data back from 0x00(0), 7 bytes
 			# Status register, X-Axis MSB, X-Axis LSB, Y-Axis MSB, Y-Axis LSB, Z-Axis MSB, Z-Axis LSB
-			data = bus.read_i2c_block_data(0x1D, 0x00, 7)
-
+		data = bus.read_i2c_block_data(0x1D, 0x00, 7)
+	
 			#except IOError:
 			#	subprocess.call(['i2cdetect', '-y', '1'])
 			#	flag = 1
 
 			# Convert the data
-			xAccl = (data[1] * 256 | data[2]) / 16 - xAcclCal
+		xAccl = (data[1] * 256 | data[2]) / 16 - xAcclCal
+		yAccl = (data[3] * 256 | data[4]) / 16 - yAcclCal
 
-			yAccl = (data[3] * 256 | data[4]) / 16 - yAcclCal
+		zAccl = (data[5] * 256 | data[6]) / 16 - zAcclCal
 
-			zAccl = (data[5] * 256 | data[6]) / 16 - zAcclCal
+		xAccl = xAccl / 10
+		yAccl = yAccl / 10
+		zAccl = zAccl / 10
 
-			xAccl = xAccl / 10
-			yAccl = yAccl / 10
-			zAccl = zAccl / 10
-
-		cx = (float(xAccl) / float(1<<11) * float(8)) * 22.5
-		cy = (float(yAccl) / float(1<<11) * float(8)) * 22.5
-		cz = (float(zAccl) / float(1<<11) * float(8)) * 22.5
+	cx = (float(xAccl) / float(1<<11) * float(8)) * 22.5
+	cy = (float(yAccl) / float(1<<11) * float(8)) * 22.5
+	cz = (float(zAccl) / float(1<<11) * float(8)) * 22.5
 		
 		# Output data to screen
-		print "Acceleration in X-Axis : %4f" %cx
-		print "Acceleration in Y-Axis : %4f" %cy
-		print "Acceleration in Z-Axis : %4f" %cz
+	print "Acceleration in X-Axis : %4f" %cx
+	print "Acceleration in Y-Axis : %4f" %cy
+	print "Acceleration in Z-Axis : %4f" %cz
