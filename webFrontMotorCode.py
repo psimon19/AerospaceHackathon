@@ -78,6 +78,10 @@ def smallStepMode():
 		GPIO.output(stp, GPIO.LOW)
 		time.sleep(sleepTime)
 
+app = web.application(urls, globals())
+app.internalerror = web.debugerror
+app.run()
+
 while (True):
 	GPIO.output(EN, GPIO.LOW)
 	smallStepMode()
