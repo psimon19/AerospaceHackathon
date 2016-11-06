@@ -8,6 +8,7 @@ import smbus
 import time
 
 bus = smbus.SMBus(1)
+global xAcclCal
 xAcclCal = 0
 yAcclCal = 0
 zAcclCal = 0
@@ -44,25 +45,27 @@ def calibrate():
 	#	flag = 1
 
 	# Convert the data
-	xAcclCal = (data[0] + data[1])
+	global xAcclCal
+	xAcclCal = (data[0] * 256 | data[1]) / 16
 	if xAcclCal > 2047 :
 		xAcclCal -= 4096
 	
-	yAcclCal = (data[2] * 256 + data[3])
+	global yAcclCal
+	yAcclCal = (data[3] * 256 | data[4]) / 16
 	if yAcclCal > 2047 :
 		yAcclCal -= 4096
 
-	zAcclCal = (data[4] * 256 + data[5])
-	if zAccl > 2047 :
+	global zAcclCal
+	zAcclCal = (data[5] * 256 | data[6]) /16
+	if zAcclCal > 2047 :
 		zAcclCal -= 4096
+	print xAcclCal
 
-
-calibrateTrue = input("Calibrated? (y): ")
-	while (calibrateTrue != "y") {
-		calibrateTrue = input("Calibrated? (y): ")
-	}
+calibrateTrue = raw_input("Calibrated? (y): ")
+while (calibrateTrue is not "y"):
+	calibrateTrue = raw_input("Calibrated? (y): ")
+	calibrate()
 calibrate()
-
 while (True):
 
 	
@@ -93,20 +96,23 @@ while (True):
 	#	flag = 1
 
 	# Convert the data
-	xAccl = (data[0] + data[1]) - xAcclCal
+	xAccl = (data[1] * 256 | data[2]) / 16 - xAcclCal
 	if xAccl > 2047 :
 		xAccl -= 4096
-	
-	yAccl = (data[2] * 256 + data[3]) - yAcclCal
+
+	yAccl = (data[3] * 256 | data[4]) / 16 - yAcclCal
 	if yAccl > 2047 :
 		yAccl -= 4096
 
-	zAccl = (data[4] * 256 + data[5]) - zAcclCal
+	zAccl = (data[5] * 256 | data[6]) / 16 - zAcclCal
 	if zAccl > 2047 :
 		zAccl -= 4096
 
+	cx = float(xAccl) / float(1<<11) * float(8)
+	cy = float(yAccl) / float(1<<11) * float(8)
+	cz = float(zAccl) / float(1<<11) * float(8) 
 	
 	# Output data to screen
-	print "Acceleration in X-Axis : %d" %xAccl
-#	print "Acceleration in Y-Axis : %d" %yAccl
-#	print "Acceleration in Z-Axis : %d" %zAccl
+	print "Acceleration in X-Axis : %f" %cx
+	print "Acceleration in Y-Axis : %f" %cy
+	print "Acceleration in Z-Axis : %f" %cz
