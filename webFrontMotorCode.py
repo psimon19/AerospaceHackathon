@@ -1,7 +1,6 @@
 import time
 import RPi.GPIO as GPIO
 import web
-import view
 import math
 
 EN = 7
@@ -24,6 +23,7 @@ count = 0
 urls = (
     '/*', 'index'
 )
+app = web.application(urls, globals())
 
 class index:
     def GET(self):
@@ -79,7 +79,8 @@ def smallStepMode():
 		GPIO.output(stp, GPIO.LOW)
 		time.sleep(sleepTime)
 
-app.run(self, ("0.0.0.0", 8181))
+if __name__ == "__main__":
+    app.run()
 
 while (True):
 	GPIO.output(EN, GPIO.LOW)
