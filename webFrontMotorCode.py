@@ -1,5 +1,6 @@
 import time
 import RPi.GPIO as GPIO
+import web
 
 EN = 7
 MS1 = 11
@@ -17,6 +18,10 @@ GPIO.setup(stp, GPIO.OUT)
 GPIO.setup(dir, GPIO.OUT)
 
 count = 0
+
+urls = (
+    '/', 'index'
+)
 
 #Variables
 SIDRATE = .0000727	#Sidereal rate
@@ -36,6 +41,10 @@ lArms = 8.5			#Length of arms (inch)
 seconds	= 0.0		#Seconds between change
 
 debugVar			#debug variable
+
+class index:
+    def GET(self):
+        return "Hello World"
 
 #Time in seconds between
 def sleepTime():
