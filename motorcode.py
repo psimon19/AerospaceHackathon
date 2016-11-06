@@ -18,27 +18,31 @@ GPIO.setup(dir, GPIO.OUT)
 
 count = 0
 
-#Variables
+#Variables 
 SIDRATE = .0000727	#Sidereal rate
-TPI = 16			#Thread per inch
-REV = 1/16 * TPI	#Revolution
+TPI = 16.0			#Thread per inch
+REV = 1.0/16 * TPI	#Revolution
 SPR = 3200			#Steps per revolution
-ARCCORRECTION = 0 	#Correction for arc
+ARCCORRECTION = 0.0	#Correction for arc
 
-dThetaMu = 		#Change in theta for 1 mu step
-#ThetaR	 = 		#Change in theta for 1 revolution
+#dThetaMu 		#Change in theta for 1 micro step
+ThetaR	= 0.0 		#Change in theta for 1 revolution
 
 
-dlRod = 1/16		#Change in length of the rod
-dlRodMu				#Change in length of rod per step
-lArms = 			#Length of arms
-seconds				#Seconds between change
+dlRod = 1.0/16		#Change in length of the rod (inch)
+#dlRodMu				#Change in length of rod per step (inch)
+
+lArms = 8.5			#Length of arms (inch)
+seconds	= 0.0		#Seconds between change
+
+debugVar			#debug variable
 
 #Time in seconds between 
 def sleepTime():
-	#dThetaR = math.acos((dlRod ** 2) / ((2) * (lArms ** 2)))
-	dlRodMu = (dlRod) * (1 / SPR)
-	dThetaMu = math.acos((dlRodMu ** 2) / ((2) * (lArms ** 2)))
+	dThetaR = math.acos(1 - ((dlRod ** 2) / ((2) * (lArms ** 2)))) / SPR
+	#dlRodMu = (dlRod) * (1 / SPR)
+	#dThetaMu = math.acos(1 - (dlRodMu ** 2) / ((2) * (lArms ** 2)))
+	#print dThetaR
 	seconds = (dThetaMu + ARCCORRECTION) / SIDRATE
 	return seconds
 
@@ -50,6 +54,8 @@ def resetBEDPins():
 	GPIO.output(MS3, GPIO.LOW)
 	GPIO.output(EN, GPIO.HIGH)
 
+sleepTime = sleepTime()
+
 def smallStepMode():
 	GPIO.output(dir, GPIO.LOW)
 	GPIO.output(MS1, GPIO.HIGH)
@@ -57,9 +63,9 @@ def smallStepMode():
 	GPIO.output(MS3, GPIO.HIGH)
 	for i in range(0, 200):
 		GPIO.output(stp, GPIO.HIGH)
-		time.sleep(0.02)
+		time.sleep(0, sleepTime)
 		GPIO.output(stp, GPIO.LOW)
-		time.sleep(0.02)
+		time.sleep(0, sleepTime)
 
 GPIO.output(EN, GPIO.LOW)
 smallStepMode()
