@@ -1,7 +1,7 @@
-from PIL import Image
-filename = "trackingImage.png"
+from PIL import Image, ImageDraw
+fileName = "StressTest.png"
 
-image = Image.open(filename)
+image = Image.open(fileName)
 grayscale = image.convert("L")
 
 maxPointX = 0
@@ -20,4 +20,10 @@ for width in range(0, image.size[0]):
    			maxPointY = height
 		prevPx = pixel;
 
-print "Value is at: (%d, %d)", maxPointX, maxPointY 
+image = Image.open(fileName)
+draw = ImageDraw.Draw(image)
+draw.rectangle(((maxPointX - 5, maxPointY-5),(maxPointX + 5, maxPointY + 5)), fill=None, outline = "red")
+del draw
+image.save("imageout2.jpg")
+
+print "Value is at: (%d, %d)", maxPointX, maxPointY
