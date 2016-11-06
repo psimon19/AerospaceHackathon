@@ -22,7 +22,7 @@ GPIO.setup(dir, GPIO.OUT)
 count = 0
 
 urls = (
-    '/', 'index'
+    '/*', 'index'
 )
 
 class index:
@@ -79,8 +79,6 @@ def smallStepMode():
 		GPIO.output(stp, GPIO.LOW)
 		time.sleep(sleepTime)
 
-app = web.application(urls, globals())
-app.internalerror = web.debugerror
 app.run()
 
 while (True):
