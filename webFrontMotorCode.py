@@ -1,6 +1,7 @@
 import time
 import RPi.GPIO as GPIO
 import web
+import view
 import math
 
 EN = 7
