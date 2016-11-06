@@ -2,6 +2,8 @@ import time
 import RPi.GPIO as GPIO
 import math
 
+f = open("/var/www/html/log.txt", "w")
+
 EN = 7
 MS1 = 11
 MS2 = 13
@@ -37,10 +39,12 @@ lArms = 8.5
 			#Length of arms (inch)
 seconds	= 0.0		#Seconds between change
 
+totalTheta = 0.0
 
 
 #Time in seconds between
 def sleepTime():
+	global dThetaR
 	dThetaR = math.acos(1 - ((dlRod ** 2) / ((2) * (lArms ** 2)))) / SPR
 	#dlRodMu = (dlRod) * (1 / SPR)
 	#dThetaMu = math.acos(1 - (dlRodMu ** 2) / ((2) * (lArms ** 2)))
@@ -59,6 +63,7 @@ def resetBEDPins():
 sleepTime = sleepTime()
 
 def smallStepMode():
+	global totalTheta, dThetaR
 	GPIO.output(dir, GPIO.LOW)
 	GPIO.output(MS1, GPIO.HIGH)
 	GPIO.output(MS2, GPIO.HIGH)
@@ -68,10 +73,17 @@ def smallStepMode():
 		time.sleep(sleepTime)
 		GPIO.output(stp, GPIO.LOW)
 		time.sleep(sleepTime)
+	totalTheta += dThetaR
 
+i = 0;
 while (True):
 	GPIO.output(EN, GPIO.LOW)
 	smallStepMode()
+	if (i % 2 == 0):
+		f.write("Mount is at {} radians\n\r".format(totalTheta))
+		f.flush()
+		f.seek(0)
+	i+=1
 
 resetBEDPins()
 GPIO.cleanup()
