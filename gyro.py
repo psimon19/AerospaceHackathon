@@ -38,19 +38,19 @@ while (True):
 	#	flag = 1
 
 	# Convert the data
-	xAccl = (data[1] * 256 + data[2]) / 16
+	xAccl = (data[0] + data[1])
 	if xAccl > 2047 :
-	xAccl -= 4096
-
-	yAccl = (data[3] * 256 + data[4]) / 16
+		xAccl -= 4096
+	
+	yAccl = (data[2] * 256 + data[3]) / 16
 	if yAccl > 2047 :
-	yAccl -= 4096
+		yAccl -= 4096
 
-	zAccl = (data[5] * 256 + data[6]) / 16
+	zAccl = (data[4] * 256 + data[5]) / 16
 	if zAccl > 2047 :
-	zAccl -= 4096
+		zAccl -= 4096
 
 	# Output data to screen
 	print "Acceleration in X-Axis : %d" %xAccl
-	print "Acceleration in Y-Axis : %d" %yAccl
-	print "Acceleration in Z-Axis : %d" %zAccl
+#	print "Acceleration in Y-Axis : %d" %yAccl
+#	print "Acceleration in Z-Axis : %d" %zAccl
