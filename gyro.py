@@ -6,29 +6,38 @@
 
 import smbus
 import time
+import subprocess
 
+#try:
 # Get I2C bus
-bus = smbus.SMBus(1)
 
+bus = smbus.SMBus(1)
+print "--"
 # MMA8452Q address, 0x1C(28)
 # Select Control register, 0x2A(42)
 #		0x00(00)	StandBy mode
-bus.write_byte_data(0x1C, 0x2A, 0x00)
+bus.write_byte_data(0x1D, 0x2A, 0x00)
+print "00"
 # MMA8452Q address, 0x1C(28)
 # Select Control register, 0x2A(42)
 #		0x01(01)	Active mode
-bus.write_byte_data(0x1C, 0x2A, 0x01)
+bus.write_byte_data(0x1D, 0x2A, 0x01)
+print "01"
 # MMA8452Q address, 0x1C(28)
 # Select Configuration register, 0x0E(14)
 #		0x00(00)	Set range to +/- 2g
-bus.write_byte_data(0x1C, 0x0E, 0x00)
-
+bus.write_byte_data(0x1D, 0x0E, 0x00)
+print "02"
 time.sleep(0.5)
 
 # MMA8452Q address, 0x1C(28)
 # Read data back from 0x00(0), 7 bytes
 # Status register, X-Axis MSB, X-Axis LSB, Y-Axis MSB, Y-Axis LSB, Z-Axis MSB, Z-Axis LSB
-data = bus.read_i2c_block_data(0x1C, 0x00, 7)
+data = bus.read_i2c_block_data(0x1D, 0x00, 7)
+
+#except IOError:
+#	subprocess.call(['i2cdetect', '-y', '1'])
+#	flag = 1
 
 # Convert the data
 xAccl = (data[1] * 256 + data[2]) / 16

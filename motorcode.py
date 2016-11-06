@@ -44,7 +44,7 @@ def sleepTime():
 	#dThetaMu = math.acos(1 - (dlRodMu ** 2) / ((2) * (lArms ** 2)))
 	#print dThetaR
 	seconds = (dThetaMu + ARCCORRECTION) / SIDRATE
-	return seconds
+	return seconds / 2
 
 def resetBEDPins():
 	GPIO.output(stp, GPIO.LOW)
@@ -67,8 +67,9 @@ def smallStepMode():
 		GPIO.output(stp, GPIO.LOW)
 		time.sleep(0, sleepTime)
 
-GPIO.output(EN, GPIO.LOW)
-smallStepMode()
-resetBEDPins()
+while (True):
+	GPIO.output(EN, GPIO.LOW)
+	smallStepMode()
+	resetBEDPins()
 
 GPIO.cleanup()

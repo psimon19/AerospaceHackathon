@@ -33,9 +33,9 @@ def smallStepMode():
 	GPIO.output(MS3, GPIO.HIGH)
 	for i in range(0, 200):
 		GPIO.output(stp, GPIO.HIGH)
-		time.sleep(0.02)
+		time.sleep(0.03161/2)
 		GPIO.output(stp, GPIO.LOW)
-		time.sleep(0.02)
+		time.sleep(0.03161/2)
 
 GPIO.output(EN, GPIO.LOW)
 smallStepMode()
