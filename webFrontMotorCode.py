@@ -79,7 +79,7 @@ def smallStepMode():
 		GPIO.output(stp, GPIO.LOW)
 		time.sleep(sleepTime)
 
-app.run()
+app.run(self, ("0.0.0.0", 8181))
 
 while (True):
 	GPIO.output(EN, GPIO.LOW)
