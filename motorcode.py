@@ -20,8 +20,8 @@ count = 0
 
 #Variables 
 SIDRATE = .0000727	#Sidereal rate
-TPI = 16.0			#Thread per inch
-REV = 1.0/16 * TPI	#Revolution
+TPI = 28.0			#Thread per inch
+REV = 1.0/28 * TPI	#Revolution
 SPR = 3200			#Steps per revolution
 ARCCORRECTION = 0.0	#Correction for arc
 
@@ -29,7 +29,7 @@ ARCCORRECTION = 0.0	#Correction for arc
 ThetaR	= 0.0 		#Change in theta for 1 revolution
 
 
-dlRod = 1.0/16		#Change in length of the rod (inch)
+dlRod = 1.0/TPI		#Change in length of the rod (inch)
 #dlRodMu				#Change in length of rod per step (inch)
 
 lArms = 8.5			#Length of arms (inch)
