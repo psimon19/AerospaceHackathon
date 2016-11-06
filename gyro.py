@@ -46,7 +46,7 @@ def calibrate():
 
 	# Convert the data
 	global xAcclCal
-	xAcclCal = (data[0] * 256 | data[1]) / 16
+	xAcclCal = (data[1] * 256 | data[2]) / 16
 	if xAcclCal > 2047 :
 		xAcclCal -= 4096
 	
@@ -108,11 +108,11 @@ while (True):
 	if zAccl > 2047 :
 		zAccl -= 4096
 
-	cx = float(xAccl) / float(1<<11) * float(8)
-	cy = float(yAccl) / float(1<<11) * float(8)
-	cz = float(zAccl) / float(1<<11) * float(8) 
+	cx = (float(xAccl) / float(1<<11) * float(8)) * 22.5
+	cy = (float(yAccl) / float(1<<11) * float(8)) * 22.5
+	cz = (float(zAccl) / float(1<<11) * float(8)) * 22.5
 	
 	# Output data to screen
-	print "Acceleration in X-Axis : %f" %cx
-	print "Acceleration in Y-Axis : %f" %cy
-	print "Acceleration in Z-Axis : %f" %cz
+	print "Acceleration in X-Axis : %4f" %cx
+	print "Acceleration in Y-Axis : %4f" %cy
+	print "Acceleration in Z-Axis : %4f" %cz
